@@ -8,7 +8,7 @@
 #include <unistd.h>
 
 void
-cttest_allocf()
+cttest_allocf(void)
 {
     char *got;
 
@@ -18,7 +18,7 @@ cttest_allocf()
 }
 
 void
-cttest_opt_none()
+cttest_opt_none(void)
 {
     char *args[] = {
         NULL,
@@ -44,7 +44,7 @@ success(void)
 }
 
 void
-cttest_optminus()
+cttest_optminus(void)
 {
     char *args[] = {
         "-",
@@ -57,7 +57,7 @@ cttest_optminus()
 }
 
 void
-cttest_optp()
+cttest_optp(void)
 {
     char *args[] = {
         "-p1234",
@@ -69,7 +69,7 @@ cttest_optp()
 }
 
 void
-cttest_optl()
+cttest_optl(void)
 {
     char *args[] = {
         "-llocalhost",
@@ -81,7 +81,7 @@ cttest_optl()
 }
 
 void
-cttest_optlseparate()
+cttest_optlseparate(void)
 {
     char *args[] = {
         "-l",
@@ -94,7 +94,7 @@ cttest_optlseparate()
 }
 
 void
-cttest_optz()
+cttest_optz(void)
 {
     char *args[] = {
         "-z1234",
@@ -106,7 +106,7 @@ cttest_optz()
 }
 
 void
-cttest_optz_more_than_max()
+cttest_optz_more_than_max(void)
 {
     char *args[] = {
         "-z1073741825",
@@ -118,7 +118,7 @@ cttest_optz_more_than_max()
 }
 
 void
-cttest_opts()
+cttest_opts(void)
 {
     char *args[] = {
         "-s1234",
@@ -130,7 +130,7 @@ cttest_opts()
 }
 
 void
-cttest_optf()
+cttest_optf(void)
 {
     char *args[] = {
         "-f1234",
@@ -143,7 +143,7 @@ cttest_optf()
 }
 
 void
-cttest_optF()
+cttest_optF(void)
 {
     char *args[] = {
         "-f1234",
@@ -156,7 +156,7 @@ cttest_optF()
 }
 
 void
-cttest_optu()
+cttest_optu(void)
 {
     char *args[] = {
         "-ukr",
@@ -168,7 +168,7 @@ cttest_optu()
 }
 
 void
-cttest_optb()
+cttest_optb(void)
 {
     char *args[] = {
         "-bfoo",
@@ -181,7 +181,7 @@ cttest_optb()
 }
 
 void
-cttest_optV()
+cttest_optV(void)
 {
     char *args[] = {
         "-V",
@@ -193,7 +193,7 @@ cttest_optV()
 }
 
 void
-cttest_optV_V()
+cttest_optV_V(void)
 {
     char *args[] = {
         "-V",
@@ -206,7 +206,7 @@ cttest_optV_V()
 }
 
 void
-cttest_optVVV()
+cttest_optVVV(void)
 {
     char *args[] = {
         "-VVV",
@@ -218,7 +218,7 @@ cttest_optVVV()
 }
 
 void
-cttest_optVFVu()
+cttest_optVFVu(void)
 {
     char *args[] = {
         "-VFVukr",

@@ -74,11 +74,9 @@ fmtalloc(char *fmt, ...)
 // returns a pointer to it.
 // If insufficient memory is available, zalloc returns 0.
 void*
-zalloc(int n)
+zalloc(size_t n)
 {
-    void *p;
-
-    p = malloc(n);
+    void *p = malloc(n);
     if (p) {
         memset(p, 0, n);
     }
@@ -142,8 +140,8 @@ parse_size_t(char *str)
     char r, x;
     size_t size;
 
-    r = sscanf(str, "%zu%c", &size, &x);
-    if (1 != r) {
+    r = (char)sscanf(str, "%zu%c", &size, &x);
+    if (r != 1) {
         warnx("invalid size: %s", str);
         usage(5);
     }

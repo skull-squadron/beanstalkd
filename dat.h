@@ -21,7 +21,7 @@ typedef struct Server Server;
 typedef struct Wal    Wal;
 
 typedef void(*Handle)(void*, int rw);
-typedef int(FAlloc)(int, int);
+typedef int(FAlloc)(int, size_t);
 
 
 // NUM_PRIMES is used in the jobs hashing.
@@ -282,14 +282,14 @@ struct Tube {
 void warn(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 void warnx(const char *fmt, ...) __attribute__((format(printf, 1, 2)));
 char* fmtalloc(char *fmt, ...) __attribute__((format(printf, 1, 2)));
-void* zalloc(int n);
+void* zalloc(size_t n);
 #define new(T) zalloc(sizeof(T))
 void optparse(Server*, char**);
 
 extern const char *progname;
 
 int64 nanoseconds(void);
-int   rawfalloc(int fd, int len);
+int   rawfalloc(int fd, size_t len);
 
 // Take ID for a jobs from next_id and allocate and store the job.
 #define make_job(pri,delay,ttr,body_size,tube) \
@@ -339,7 +339,7 @@ int count_cur_producers(void);
 int count_cur_workers(void);
 
 
-extern size_t primes[];
+extern const size_t primes[];
 
 
 extern size_t job_data_size_limit;
@@ -352,7 +352,7 @@ void remove_waiting_conn(Conn *c);
 void enqueue_reserved_jobs(Conn *c);
 
 void enter_drain_mode(int sig);
-void h_accept(const int fd, const short which, Server *s);
+void h_accept(int fd, short which, Server *s);
 int  prot_replay(Server *s, Job *list);
 
 
@@ -428,7 +428,7 @@ enum
 };
 
 struct Wal {
-    int    filesize;
+    size_t filesize;
     int    use;
     char   *dir;
     File   *head;

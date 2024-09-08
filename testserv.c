@@ -41,11 +41,11 @@ exist(char *path)
 }
 
 static int
-wrapfalloc(int fd, int size)
+wrapfalloc(int fd, size_t size)
 {
     static size_t c = 0;
 
-    printf("\nwrapfalloc: fd=%d size=%d\n", fd, size);
+    printf("\nwrapfalloc: fd=%d size=%zu\n", fd, size);
     if (c >= sizeof(fallocpat) || !fallocpat[c++]) {
         return ENOSPC;
     }
@@ -101,7 +101,7 @@ mustdiallocal(int port)
         exit(1);
     }
 
-    r = connect(fd, (struct sockaddr *)&addr, sizeof addr);
+    r = connect(fd, (struct sockaddr *)&addr, sizeof(addr));
     if (r == -1) {
         twarn("connect");
         exit(1);
@@ -124,7 +124,7 @@ mustdialunix(char *socket_file)
         exit(1);
     }
 
-    int r = connect(fd, (struct sockaddr *)&addr, sizeof addr);
+    int r = connect(fd, (struct sockaddr *)&addr, sizeof(addr));
     if (r == -1) {
         twarn("connect");
         exit(1);
@@ -141,7 +141,7 @@ exit_process(int signum)
 }
 
 static void
-set_sig_handler()
+set_sig_handler(void)
 {
     struct sigaction sa;
 
@@ -366,7 +366,7 @@ filesize(char *path)
 }
 
 void
-cttest_unknown_command()
+cttest_unknown_command(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -375,7 +375,7 @@ cttest_unknown_command()
 }
 
 void
-cttest_too_long_commandline()
+cttest_too_long_commandline(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -392,7 +392,7 @@ cttest_too_long_commandline()
 }
 
 void
-cttest_put_in_drain()
+cttest_put_in_drain(void)
 {
     enter_drain_mode(SIGUSR1);
     int port = SERVER();
@@ -403,7 +403,7 @@ cttest_put_in_drain()
 }
 
 void
-cttest_peek_ok()
+cttest_peek_ok(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -417,7 +417,7 @@ cttest_peek_ok()
 }
 
 void
-cttest_peek_not_found()
+cttest_peek_not_found(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -432,7 +432,7 @@ cttest_peek_not_found()
 }
 
 void
-cttest_peek_ok_unix()
+cttest_peek_ok_unix(void)
 {
     char *name = SERVER_UNIX();
     int fd = mustdialunix(name);
@@ -448,7 +448,7 @@ cttest_peek_ok_unix()
 }
 
 void
-cttest_unix_auto_removal()
+cttest_unix_auto_removal(void)
 {
     // Twice, to trigger autoremoval
     SERVER_UNIX();
@@ -457,7 +457,7 @@ cttest_unix_auto_removal()
 }
 
 void
-cttest_peek_bad_format()
+cttest_peek_bad_format(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -472,7 +472,7 @@ cttest_peek_bad_format()
 }
 
 void
-cttest_peek_delayed()
+cttest_peek_delayed(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -508,7 +508,7 @@ cttest_peek_delayed()
 }
 
 void
-cttest_peek_buried_kick()
+cttest_peek_buried_kick(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -548,7 +548,7 @@ cttest_peek_buried_kick()
 }
 
 void
-cttest_touch_bad_format()
+cttest_touch_bad_format(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -561,7 +561,7 @@ cttest_touch_bad_format()
 }
 
 void
-cttest_touch_not_found()
+cttest_touch_not_found(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -572,7 +572,7 @@ cttest_touch_not_found()
 }
 
 void
-cttest_bury_bad_format()
+cttest_bury_bad_format(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -585,7 +585,7 @@ cttest_bury_bad_format()
 }
 
 void
-cttest_kickjob_bad_format()
+cttest_kickjob_bad_format(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -598,7 +598,7 @@ cttest_kickjob_bad_format()
 }
 
 void
-cttest_kickjob_buried()
+cttest_kickjob_buried(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -621,7 +621,7 @@ cttest_kickjob_buried()
 }
 
 void
-cttest_kickjob_delayed()
+cttest_kickjob_delayed(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -642,7 +642,7 @@ cttest_kickjob_delayed()
 }
 
 void
-cttest_pause()
+cttest_pause(void)
 {
     int64 s;
 
@@ -661,7 +661,7 @@ cttest_pause()
 }
 
 void
-cttest_underscore()
+cttest_underscore(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -670,7 +670,7 @@ cttest_underscore()
 }
 
 void
-cttest_2cmdpacket()
+cttest_2cmdpacket(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -680,7 +680,7 @@ cttest_2cmdpacket()
 }
 
 void
-cttest_too_big()
+cttest_too_big(void)
 {
     job_data_size_limit = 10;
     int port = SERVER();
@@ -694,7 +694,7 @@ cttest_too_big()
 }
 
 void
-cttest_job_size_invalid()
+cttest_job_size_invalid(void)
 {
     job_data_size_limit = JOB_DATA_SIZE_LIMIT_MAX;
     int port = SERVER();
@@ -711,7 +711,7 @@ cttest_job_size_invalid()
 }
 
 void
-cttest_job_size_max_plus_1()
+cttest_job_size_max_plus_1(void)
 {
     /* verify that server reject the job larger than maximum allowed. */
     job_data_size_limit = JOB_DATA_SIZE_LIMIT_MAX;
@@ -734,7 +734,7 @@ cttest_job_size_max_plus_1()
 }
 
 void
-cttest_delete_ready()
+cttest_delete_ready(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -746,7 +746,7 @@ cttest_delete_ready()
 }
 
 void
-cttest_delete_reserved_by_other()
+cttest_delete_reserved_by_other(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -764,7 +764,7 @@ cttest_delete_reserved_by_other()
 }
 
 void
-cttest_delete_bad_format()
+cttest_delete_bad_format(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -779,7 +779,7 @@ cttest_delete_bad_format()
 }
 
 void
-cttest_multi_tube()
+cttest_multi_tube(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -802,7 +802,7 @@ cttest_multi_tube()
 }
 
 void
-cttest_negative_delay()
+cttest_negative_delay(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -813,7 +813,7 @@ cttest_negative_delay()
 /* TODO: add more edge cases tests for delay and ttr */
 
 void
-cttest_garbage_priority()
+cttest_garbage_priority(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -823,7 +823,7 @@ cttest_garbage_priority()
 }
 
 void
-cttest_negative_priority()
+cttest_negative_priority(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -833,7 +833,7 @@ cttest_negative_priority()
 }
 
 void
-cttest_max_priority()
+cttest_max_priority(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -843,7 +843,7 @@ cttest_max_priority()
 }
 
 void
-cttest_too_big_priority()
+cttest_too_big_priority(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -853,7 +853,7 @@ cttest_too_big_priority()
 }
 
 void
-cttest_omit_time_left()
+cttest_omit_time_left(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -866,7 +866,7 @@ cttest_omit_time_left()
 }
 
 void
-cttest_small_delay()
+cttest_small_delay(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -876,7 +876,7 @@ cttest_small_delay()
 }
 
 void
-cttest_delayed_to_ready()
+cttest_delayed_to_ready(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -914,7 +914,7 @@ cttest_delayed_to_ready()
 }
 
 void
-cttest_statsjob_ck_format()
+cttest_statsjob_ck_format(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -927,7 +927,7 @@ cttest_statsjob_ck_format()
 }
 
 void
-cttest_stats_tube()
+cttest_stats_tube(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -1027,7 +1027,7 @@ cttest_stats_tube()
 }
 
 void
-cttest_ttrlarge()
+cttest_ttrlarge(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -1076,7 +1076,7 @@ cttest_ttrlarge()
 }
 
 void
-cttest_ttr_small()
+cttest_ttr_small(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -1089,7 +1089,7 @@ cttest_ttr_small()
 }
 
 void
-cttest_zero_delay()
+cttest_zero_delay(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -1099,7 +1099,7 @@ cttest_zero_delay()
 }
 
 void
-cttest_reserve_with_timeout_2conns()
+cttest_reserve_with_timeout_2conns(void)
 {
     int fd0, fd1;
 
@@ -1118,7 +1118,7 @@ cttest_reserve_with_timeout_2conns()
 }
 
 void
-cttest_reserve_ttr_deadline_soon()
+cttest_reserve_ttr_deadline_soon(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -1154,7 +1154,7 @@ cttest_reserve_ttr_deadline_soon()
 }
 
 void
-cttest_reserve_job_ttr_deadline_soon()
+cttest_reserve_job_ttr_deadline_soon(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -1202,7 +1202,7 @@ cttest_reserve_job_ttr_deadline_soon()
 }
 
 void
-cttest_reserve_job_already_reserved()
+cttest_reserve_job_already_reserved(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -1221,7 +1221,7 @@ cttest_reserve_job_already_reserved()
 }
 
 void
-cttest_reserve_job_ready()
+cttest_reserve_job_ready(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -1250,7 +1250,7 @@ cttest_reserve_job_ready()
 }
 
 void
-cttest_reserve_job_delayed()
+cttest_reserve_job_delayed(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -1279,7 +1279,7 @@ cttest_reserve_job_delayed()
 }
 
 void
-cttest_reserve_job_buried()
+cttest_reserve_job_buried(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -1327,7 +1327,7 @@ cttest_reserve_job_buried()
 }
 
 void
-cttest_release_bad_format()
+cttest_release_bad_format(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -1352,7 +1352,7 @@ cttest_release_bad_format()
 }
 
 void
-cttest_release_not_found()
+cttest_release_not_found(void)
 {
     int port = SERVER();
     int fd = mustdiallocal(port);
@@ -1361,7 +1361,7 @@ cttest_release_not_found()
 }
 
 void
-cttest_close_releases_job()
+cttest_close_releases_job(void)
 {
     int port = SERVER();
     int cons = mustdiallocal(port);
@@ -1390,7 +1390,7 @@ cttest_close_releases_job()
 }
 
 void
-cttest_quit_releases_job()
+cttest_quit_releases_job(void)
 {
     // This test is similar to the close_releases_job test, except that
     // connection is not closed, but command quit is sent.
@@ -1421,7 +1421,7 @@ cttest_quit_releases_job()
 }
 
 void
-cttest_unpause_tube()
+cttest_unpause_tube(void)
 {
     int fd0, fd1;
 
@@ -1448,7 +1448,7 @@ cttest_unpause_tube()
 }
 
 void
-cttest_list_tube()
+cttest_list_tube(void)
 {
     int port = SERVER();
     int fd0 = mustdiallocal(port);
@@ -1495,7 +1495,7 @@ cttest_list_tube()
     "0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789"
 
 void
-cttest_use_tube_long()
+cttest_use_tube_long(void)
 {
     int port = SERVER();
     int fd0 = mustdiallocal(port);
@@ -1508,7 +1508,7 @@ cttest_use_tube_long()
 }
 
 void
-cttest_longest_command()
+cttest_longest_command(void)
 {
     int port = SERVER();
     int fd0 = mustdiallocal(port);
@@ -1519,7 +1519,7 @@ cttest_longest_command()
 }
 
 void
-cttest_binlog_empty_exit()
+cttest_binlog_empty_exit(void)
 {
     srv.wal.dir = ctdir();
     srv.wal.use = 1;
@@ -1536,7 +1536,7 @@ cttest_binlog_empty_exit()
 }
 
 void
-cttest_binlog_bury()
+cttest_binlog_bury(void)
 {
     srv.wal.dir = ctdir();
     srv.wal.use = 1;
@@ -1555,7 +1555,7 @@ cttest_binlog_bury()
 }
 
 void
-cttest_binlog_basic()
+cttest_binlog_basic(void)
 {
     srv.wal.dir = ctdir();
     srv.wal.use = 1;
@@ -1576,7 +1576,7 @@ cttest_binlog_basic()
 }
 
 void
-cttest_binlog_size_limit()
+cttest_binlog_size_limit(void)
 {
     int i = 0;
     int gotsize;
@@ -1609,7 +1609,7 @@ cttest_binlog_size_limit()
 }
 
 void
-cttest_binlog_allocation()
+cttest_binlog_allocation(void)
 {
     int i = 0;
 
@@ -1638,7 +1638,7 @@ cttest_binlog_allocation()
 }
 
 void
-cttest_binlog_read()
+cttest_binlog_read(void)
 {
     srv.wal.dir = ctdir();
     srv.wal.use = 1;
@@ -1684,7 +1684,7 @@ cttest_binlog_read()
 }
 
 void
-cttest_binlog_disk_full()
+cttest_binlog_disk_full(void)
 {
     size = 1000;
     falloc = &wrapfalloc;
@@ -1748,7 +1748,7 @@ cttest_binlog_disk_full()
 }
 
 void
-cttest_binlog_disk_full_delete()
+cttest_binlog_disk_full_delete(void)
 {
     size = 1000;
     falloc = &wrapfalloc;
@@ -1816,7 +1816,7 @@ cttest_binlog_disk_full_delete()
 }
 
 void
-cttest_binlog_v5()
+cttest_binlog_v5(void)
 {
     char portstr[10];
 
@@ -1987,7 +1987,7 @@ cttest_binlog_v5()
     ckrespsub(fd, "\nkicks: 0\n");
 }
 
-static void
+void
 bench_put_delete_size(int n, int size, int walsize, int sync, int64 syncrate_ms)
 {
     if (walsize > 0) {

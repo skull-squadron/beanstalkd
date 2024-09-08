@@ -9,7 +9,7 @@
 static Tube *default_tube;
 
 void
-cttest_job_creation()
+cttest_job_creation(void)
 {
     Job *j;
 
@@ -19,7 +19,7 @@ cttest_job_creation()
 }
 
 void
-cttest_job_cmp_pris()
+cttest_job_cmp_pris(void)
 {
     Job *a, *b;
 
@@ -31,7 +31,7 @@ cttest_job_cmp_pris()
 }
 
 void
-cttest_job_cmp_ids()
+cttest_job_cmp_ids(void)
 {
     Job *a, *b;
 
@@ -44,7 +44,7 @@ cttest_job_cmp_ids()
 }
 
 void
-cttest_job_large_pris()
+cttest_job_large_pris(void)
 {
     Job *a, *b;
 
@@ -61,7 +61,7 @@ cttest_job_large_pris()
 }
 
 void
-cttest_job_hash_free()
+cttest_job_hash_free(void)
 {
     Job *j;
     uint64 jid = 83;
@@ -74,7 +74,7 @@ cttest_job_hash_free()
 }
 
 void
-cttest_job_hash_free_next()
+cttest_job_hash_free_next(void)
 {
     Job *a, *b;
     uint64 aid = 97, bid = 12386;
@@ -91,7 +91,7 @@ cttest_job_hash_free_next()
 }
 
 void
-cttest_job_all_jobs_used()
+cttest_job_all_jobs_used(void)
 {
     Job *j, *x;
 
@@ -110,7 +110,7 @@ cttest_job_all_jobs_used()
 }
 
 void
-cttest_job_100_000_jobs()
+cttest_job_100_000_jobs(void)
 {
     int i;
 
@@ -131,7 +131,7 @@ void
 ctbench_job_make(int n)
 {
     int i;
-    Job **j = calloc(n, sizeof *j);
+    Job **j = calloc(n, sizeof(*j));
     TUBE_ASSIGN(default_tube, make_tube("default"));
 
     ctresettimer();
@@ -150,7 +150,7 @@ void
 ctbench_job_free(int n)
 {
     int i;
-    Job **j = calloc(n, sizeof *j);
+    Job **j = calloc(n, sizeof(*j));
     TUBE_ASSIGN(default_tube, make_tube("default"));
     for (i = 0; i < n; i++) {
         j[i] = make_job(0, 0, 1, 0, default_tube);

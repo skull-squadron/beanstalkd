@@ -16,7 +16,7 @@ static int hash_table_was_oom = 0;
 
 static void rehash(int);
 
-static int
+static size_t
 _get_job_hash_index(uint64 job_id)
 {
     return job_id % all_jobs_cap;
@@ -269,7 +269,7 @@ job_list_insert(Job *head, Job *j)
 
 /* for unit tests */
 size_t
-get_all_jobs_used()
+get_all_jobs_used(void)
 {
     return all_jobs_used;
 }

@@ -41,10 +41,10 @@ See http://github.com/rtomayko/ronn.
 
 ## Subdirectories
 
-- `adm`	- files useful for system administrators
-- `ct`	- testing tool; vendored from https://github.com/kr/ct
-- `doc`	- documentation
-- `pkg`	- scripts to make releases
+- `adm` - files useful for system administrators
+- `ct`  - testing tool; vendored from https://github.com/kr/ct
+- `doc` - documentation
+- `pkg` - scripts to make releases
 
 
 ## Tests

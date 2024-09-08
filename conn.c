@@ -34,6 +34,7 @@ on_ignore(Ms *a, Tube *t, size_t i)
 Conn *
 make_conn(int fd, char start_state, Tube *use, Tube *watch)
 {
+    UNUSED_PARAMETER(fd);
     Conn *c = new(Conn);
     if (!c) {
         twarn("OOM");
@@ -82,25 +83,25 @@ connsetworker(Conn *c)
 }
 
 int
-count_cur_conns()
+count_cur_conns(void)
 {
     return cur_conn_ct;
 }
 
 uint
-count_tot_conns()
+count_tot_conns(void)
 {
     return tot_conn_ct;
 }
 
 int
-count_cur_producers()
+count_cur_producers(void)
 {
     return cur_producer_ct;
 }
 
 int
-count_cur_workers()
+count_cur_workers(void)
 {
     return cur_worker_ct;
 }

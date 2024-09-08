@@ -37,13 +37,14 @@ su(const char *user)
 }
 
 static void
-handle_sigterm_pid1()
+handle_sigterm_pid1(int _sig)
 {
+    UNUSED_PARAMETER(_sig);
     exit(143);
 }
 
 static void
-set_sig_handlers()
+set_sig_handlers(void)
 {
     struct sigaction sa;
 
