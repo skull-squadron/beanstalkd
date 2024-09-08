@@ -39,99 +39,99 @@ BEANSTALKD_USER=beanstalkd
 lockfile=/var/lock/subsys/$prog
 
 start() {
-	[ -x $exec ] || exit 5
-	echo -n $"Starting $prog: "
+    [ -x $exec ] || exit 5
+    echo -n $"Starting $prog: "
 
-	options="-l $BEANSTALKD_ADDR -p $BEANSTALKD_PORT -u $BEANSTALKD_USER"
+    options="-l $BEANSTALKD_ADDR -p $BEANSTALKD_PORT -u $BEANSTALKD_USER"
 
-	[ -n "$BEANSTALKD_MAX_JOB_SIZE" ] && options="$options -z $BEANSTALKD_MAX_JOB_SIZE"
+    [ -n "$BEANSTALKD_MAX_JOB_SIZE" ] && options="$options -z $BEANSTALKD_MAX_JOB_SIZE"
 
-	if [ -n "$BEANSTALKD_BINLOG_DIR" ]; then
-		if [ ! -d "$BEANSTALKD_BINLOG_DIR" ]; then
-			echo "Creating binlog directory ($BEANSTALKD_BINLOG_DIR)"
-			mkdir -p $BEANSTALKD_BINLOG_DIR
-			chown $BEANSTALKD_USER:$BEANSTALKD_USER $BEANSTALKD_BINLOG_DIR
-		fi
+    if [ -n "$BEANSTALKD_BINLOG_DIR" ]; then
+        if [ ! -d "$BEANSTALKD_BINLOG_DIR" ]; then
+            echo "Creating binlog directory ($BEANSTALKD_BINLOG_DIR)"
+            mkdir -p $BEANSTALKD_BINLOG_DIR
+            chown $BEANSTALKD_USER:$BEANSTALKD_USER $BEANSTALKD_BINLOG_DIR
+        fi
 
-		options="$options -b $BEANSTALKD_BINLOG_DIR"
+        options="$options -b $BEANSTALKD_BINLOG_DIR"
 
-		if [ -n "$BEANSTALKD_BINLOG_FSYNC_PERIOD" ]; then
-			options="$options -f $BEANSTALKD_BINLOG_FSYNC_PERIOD"
-		else
-			options="$options -F"
-		fi
+        if [ -n "$BEANSTALKD_BINLOG_FSYNC_PERIOD" ]; then
+            options="$options -f $BEANSTALKD_BINLOG_FSYNC_PERIOD"
+        else
+            options="$options -F"
+        fi
 
-		if [ -n "$BEANSTALKD_BINLOG_SIZE" ]; then
-			options="$options -s $BEANSTALKD_BINLOG_SIZE"
-		fi
-	fi
+        if [ -n "$BEANSTALKD_BINLOG_SIZE" ]; then
+            options="$options -s $BEANSTALKD_BINLOG_SIZE"
+        fi
+    fi
 
-	daemon "nohup $exec $options > /dev/null 2>&1 &"
-	retval=$?
-	echo
-	[ $retval -eq 0 ] && touch $lockfile
-	return $retval
+    daemon "nohup $exec $options > /dev/null 2>&1 &"
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && touch $lockfile
+    return $retval
 }
 
 stop() {
-	echo -n $"Stopping $prog: "
-	killproc $prog
-	retval=$?
-	echo
-	[ $retval -eq 0 ] && rm -f $lockfile
-	return $retval
+    echo -n $"Stopping $prog: "
+    killproc $prog
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && rm -f $lockfile
+    return $retval
 }
 
 restart() {
-	stop
-	start
+    stop
+    start
 }
 
 reload() {
-	restart
+    restart
 }
 
 force_reload() {
-	restart
+    restart
 }
 
 rh_status() {
-	# Run checks to determine if the service is running or use generic status
-	status $prog
+    # Run checks to determine if the service is running or use generic status
+    status $prog
 }
 
 rh_status_q() {
-	rh_status >/dev/null 2>&1
+    rh_status >/dev/null 2>&1
 }
 
 case "$1" in
-	start)
-		rh_status_q && exit 0
-		$1
-		;;
-	stop)
-		rh_status_q || exit 0
-		$1
-		;;
-	restart)
-		$1
-		;;
-	reload)
-		rh_status_q || exit 7
-		$1
-		;;
-	force-reload)
-		force_reload
-		;;
-	status)
-		rh_status
-		;;
-	condrestart|try-restart)
-		rh_status_q || exit 0
-		restart
-		;;
-	*)
-		echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload}"
-		exit 2
+    start)
+        rh_status_q && exit 0
+        $1
+        ;;
+    stop)
+        rh_status_q || exit 0
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    reload)
+        rh_status_q || exit 7
+        $1
+        ;;
+    force-reload)
+        force_reload
+        ;;
+    status)
+        rh_status
+        ;;
+    condrestart|try-restart)
+        rh_status_q || exit 0
+        restart
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload}"
+        exit 2
 esac
 exit $?

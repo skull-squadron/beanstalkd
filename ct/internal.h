@@ -12,7 +12,7 @@ struct Test {
     int  status;
     int  fd;
     int  pid;
-    char dir[sizeof TmpDirPat];
+    char dir[sizeof(TmpDirPat)];
 };
 
 struct Benchmark {
@@ -21,7 +21,7 @@ struct Benchmark {
     int   status;
     int64 dur;
     int64 bytes;
-    char  dir[sizeof TmpDirPat];
+    char  dir[sizeof(TmpDirPat)];
 };
 
 extern Test ctmaintest[];

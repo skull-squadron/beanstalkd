@@ -433,7 +433,7 @@ waldirlock(Wal *w)
 }
 
 
-void
+static void
 walread(Wal *w, Job *list, int min)
 {
     int i;

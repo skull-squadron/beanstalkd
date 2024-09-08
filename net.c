@@ -64,25 +64,25 @@ make_inet_socket(char *host, char *port)
         }
 
         flags = 1;
-        r = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof flags);
+        r = setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &flags, sizeof(flags));
         if (r == -1) {
             twarn("setting SO_REUSEADDR on fd %d", fd);
             close(fd);
             continue;
         }
-        r = setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, &flags, sizeof flags);
+        r = setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, &flags, sizeof(flags));
         if (r == -1) {
             twarn("setting SO_KEEPALIVE on fd %d", fd);
             close(fd);
             continue;
         }
-        r = setsockopt(fd, SOL_SOCKET, SO_LINGER, &linger, sizeof linger);
+        r = setsockopt(fd, SOL_SOCKET, SO_LINGER, &linger, sizeof(linger));
         if (r == -1) {
             twarn("setting SO_LINGER on fd %d", fd);
             close(fd);
             continue;
         }
-        r = setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &flags, sizeof flags);
+        r = setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &flags, sizeof(flags));
         if (r == -1) {
             twarn("setting TCP_NODELAY on fd %d", fd);
             close(fd);

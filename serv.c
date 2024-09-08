@@ -76,5 +76,5 @@ srvserve(Server *s)
 void
 srvaccept(Server *s, int ev)
 {
-    h_accept(s->sock.fd, ev, s);
+    h_accept(s->sock.fd, (short)ev, s);
 }

@@ -1,8 +1,9 @@
+#include "dat.h"
 #include <stdlib.h>
 
 // prime // downscale treshold / upscale treshold
 
-size_t primes[] = {
+const size_t primes[] = {
     12289, // NA / 3072
     24593, // 1537 / 6148
     49193, // 3074 / 12298

@@ -12,7 +12,14 @@ make_tube(const char *name)
     if (!t)
         return NULL;
 
+#if defined(__GNUC__) && !defined(__llvm__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wstringop-truncation"
+#endif
     strncpy(t->name, name, MAX_TUBE_NAME_LEN);
+#if defined(__GNUC__) && !defined(__llvm__)
+#pragma GCC diagnostic pop
+#endif
     if (t->name[MAX_TUBE_NAME_LEN - 1] != '\0') {
         t->name[MAX_TUBE_NAME_LEN - 1] = '\0';
         twarnx("truncating tube name");

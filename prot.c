@@ -183,7 +183,7 @@ size_t job_data_size_limit = JOB_DATA_SIZE_LIMIT_DEFAULT;
     "binlog-current-index: %d\n" \
     "binlog-records-migrated: %" PRId64 "\n" \
     "binlog-records-written: %" PRId64 "\n" \
-    "binlog-max-size: %d\n" \
+    "binlog-max-size: %zu\n" \
     "draining: %s\n" \
     "id: %s\n" \
     "hostname: \"%s\"\n" \
@@ -317,7 +317,7 @@ epollq_rmconn(Conn *c)
 // Propagate changes to event notification mechanism about expected operations
 // in connections' sockets. Clear the epollq list.
 static void
-epollq_apply()
+epollq_apply(void)
 {
     Conn *c;
 
@@ -350,7 +350,7 @@ reply(Conn *c, char *line, int len, int state)
     c->reply = line;
     c->reply_len = len;
     c->reply_sent = 0;
-    c->state = state;
+    c->state = (byte)state;
     if (verbose >= 2) {
         printf(">%d reply %.*s\n", c->sock.fd, len-2, line);
     }
@@ -455,7 +455,7 @@ next_awaited_job(int64 now)
 
 // process_queue performs reservation for every jobs that is awaited for.
 static void
-process_queue()
+process_queue(void)
 {
     Job *j = NULL;
     int64 now = nanoseconds();
@@ -482,7 +482,7 @@ process_queue()
 // soonest_delayed_job returns the delayed job
 // with the smallest deadline_at among all tubes.
 static Job *
-soonest_delayed_job()
+soonest_delayed_job(void)
 {
     Job *j = NULL;
     size_t i;
@@ -605,7 +605,7 @@ kick_buried_job(Server *s, Job *j)
 }
 
 static uint
-get_delayed_job_ct()
+get_delayed_job_ct(void)
 {
     size_t i;
     uint count = 0;
@@ -775,10 +775,10 @@ scan_line_end(const char *s, int size)
 }
 
 /* parse the command line */
-static int
+static byte
 which_cmd(Conn *c)
 {
-#define TEST_CMD(s,c,o) if (strncmp((s), (c), CONSTSTRLEN(c)) == 0) return (o);
+#define TEST_CMD(s,c,o) if (strncmp((s), (c), CONSTSTRLEN(c)) == 0) return (o)
     TEST_CMD(c->cmd, CMD_PUT, OP_PUT);
     TEST_CMD(c->cmd, CMD_PEEKJOB, OP_PEEKJOB);
     TEST_CMD(c->cmd, CMD_PEEK_READY, OP_PEEK_READY);
@@ -921,7 +921,7 @@ enqueue_incoming_job(Conn *c)
 }
 
 static uint
-uptime()
+uptime(void)
 {
     return (nanoseconds() - started_at) / 1000000000;
 }
@@ -2105,7 +2105,7 @@ conn_process_io(Conn *c)
 #define cmd_data_ready(c) (want_command(c) && (c)->cmd_read)
 
 static void
-h_conn(const int fd, const short which, Conn *c)
+h_conn(int fd, short which, Conn *c)
 {
     if (fd != c->sock.fd) {
         twarnx("Argh! event fd doesn't match conn fd.");
@@ -2134,7 +2134,7 @@ h_conn(const int fd, const short which, Conn *c)
 static void
 prothandle(Conn *c, int ev)
 {
-    h_conn(c->sock.fd, ev, c);
+    h_conn(c->sock.fd, (short)ev, c);
 }
 
 // prottick returns nanoseconds till the next work.
@@ -2198,12 +2198,12 @@ prottick(Server *s)
 }
 
 void
-h_accept(const int fd, const short which, Server *s)
+h_accept(int fd, short which, Server *s)
 {
     UNUSED_PARAMETER(which);
     struct sockaddr_storage addr;
 
-    socklen_t addrlen = sizeof addr;
+    socklen_t addrlen = (socklen_t)sizeof(addr);
     int cfd = accept(fd, (struct sockaddr *)&addr, &addrlen);
     if (cfd == -1) {
         if (errno != EAGAIN && errno != EWOULDBLOCK) twarn("accept()");
@@ -2263,7 +2263,7 @@ h_accept(const int fd, const short which, Server *s)
 }
 
 void
-prot_init()
+prot_init(void)
 {
     started_at = nanoseconds();
     memset(op_ct, 0, sizeof(op_ct));

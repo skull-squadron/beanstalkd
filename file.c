@@ -47,23 +47,23 @@ struct Jobrec5 {
 
 enum
 {
-	Jobrec5size = offsetof(Jobrec5, pad)
+    Jobrec5size = offsetof(Jobrec5, pad)
 };
 
 // rawfalloc allocates disk space of len bytes.
 // It expects fd's offset to be 0; may also reset fd's offset to 0.
 // Returns 0 on success, and a positive errno otherwise.
 int
-rawfalloc(int fd, int len)
+rawfalloc(int fd, size_t len)
 {
     // We do not use ftruncate() because it might extend the file
     // with a sequence of null bytes or a hole.
     // posix_fallocate() is not portable enough, might fail for NFS.
     static char buf[4096] = {0};
-    int i, w;
+    int w;
 
-    for (i = 0; i < len; i += w) {
-        w = write(fd, buf, sizeof buf);
+    for (size_t i = 0; i < len; i += (size_t)w) {
+        w = write(fd, buf, sizeof(buf));
         if (w == -1)
             return errno;
     }
@@ -524,8 +524,8 @@ filewrjobshort(File *f, Job *j)
     int r, nl;
 
     nl = 0; // name len 0 indicates short record
-    r = filewrite(f, j, &nl, sizeof nl) &&
-        filewrite(f, j, &j->r, sizeof j->r);
+    r = filewrite(f, j, &nl, sizeof(nl)) &&
+        filewrite(f, j, &j->r, sizeof(j->r));
     if (!r) return 0;
 
     if (j->r.state == Invalid) {
@@ -544,9 +544,9 @@ filewrjobfull(File *f, Job *j)
     fileaddjob(f, j);
     nl = strlen(j->tube->name);
     return
-        filewrite(f, j, &nl, sizeof nl) &&
+        filewrite(f, j, &nl, sizeof(nl)) &&
         filewrite(f, j, j->tube->name, nl) &&
-        filewrite(f, j, &j->r, sizeof j->r) &&
+        filewrite(f, j, &j->r, sizeof(j->r)) &&
         filewrite(f, j, j->body, j->r.body_size);
 }
 

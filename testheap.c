@@ -8,7 +8,7 @@
 
 
 void
-cttest_heap_insert_one()
+cttest_heap_insert_one(void)
 {
     Heap h = {
         .less = job_pri_less,
@@ -28,7 +28,7 @@ cttest_heap_insert_one()
 }
 
 void
-cttest_heap_insert_and_remove_one()
+cttest_heap_insert_and_remove_one(void)
 {
     Heap h = {
         .less = job_pri_less,
@@ -50,7 +50,7 @@ cttest_heap_insert_and_remove_one()
 }
 
 void
-cttest_heap_priority()
+cttest_heap_priority(void)
 {
     Heap h = {
         .less = job_pri_less,
@@ -99,7 +99,7 @@ cttest_heap_priority()
 }
 
 void
-cttest_heap_fifo_property()
+cttest_heap_fifo_property(void)
 {
     Heap h = {
         .less = job_pri_less,
@@ -151,7 +151,7 @@ cttest_heap_fifo_property()
 }
 
 void
-cttest_heap_many_jobs()
+cttest_heap_many_jobs(void)
 {
     Heap h = {
         .less = job_pri_less,
@@ -180,7 +180,7 @@ cttest_heap_many_jobs()
 }
 
 void
-cttest_heap_remove_k()
+cttest_heap_remove_k(void)
 {
     Heap h = {
         .less = job_pri_less,
@@ -219,7 +219,7 @@ cttest_heap_remove_k()
 void
 ctbench_heap_insert(int n)
 {
-    Job **j = calloc(n, sizeof *j);
+    Job **j = calloc(n, sizeof(*j));
     int i;
     for (i = 0; i < n; i++) {
         j[i] = make_job(1, 0, 1, 0, 0);

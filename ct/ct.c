@@ -32,19 +32,19 @@ enum { MaxN = 1000 * 1000 * 1000 };
 
 
 #ifdef __MACH__
-#	include <mach/mach_time.h>
+#include <mach/mach_time.h>
 
 static int64
-nstime()
+nstime(void)
 {
     return (int64)mach_absolute_time();
 }
 
 #else
-#	include <time.h>
+#include <time.h>
 
 static int64
-nstime()
+nstime(void)
 {
     struct timespec t;
     clock_gettime(CLOCK_MONOTONIC, &t);
@@ -191,7 +191,7 @@ start(Test *t)
     t->fd = tmpfd();
     strcpy(t->dir, TmpDirPat);
     if (mkdtemp(t->dir) == NULL) {
-	die(1, errno, "mkdtemp");
+        die(1, errno, "mkdtemp");
     }
     fflush(NULL);
     t->pid = fork();
@@ -302,7 +302,7 @@ runbenchn(Benchmark *b, int n)
     int durfd = tmpfd();
     strcpy(b->dir, TmpDirPat);
     if (mkdtemp(b->dir) == NULL) {
-	die(1, errno, "mkdtemp");
+        die(1, errno, "mkdtemp");
     }
     fflush(NULL);
     int pid = fork();
@@ -323,10 +323,10 @@ runbenchn(Benchmark *b, int n)
         ctstarttimer();
         b->f(n);
         ctstoptimer();
-        if (write(durfd, &bdur, sizeof bdur) != sizeof bdur) {
+        if (write(durfd, &bdur, sizeof(bdur)) != sizeof(bdur)) {
             die(3, errno, "write");
         }
-        if (write(durfd, &bbytes, sizeof bbytes) != sizeof bbytes) {
+        if (write(durfd, &bbytes, sizeof(bbytes)) != sizeof(bbytes)) {
             die(3, errno, "write");
         }
         exit(0);
@@ -347,13 +347,13 @@ runbenchn(Benchmark *b, int n)
     }
 
     lseek(durfd, 0, SEEK_SET);
-    int r = read(durfd, &b->dur, sizeof b->dur);
-    if (r != sizeof b->dur) {
+    int r = read(durfd, &b->dur, sizeof(b->dur));
+    if (r != sizeof(b->dur)) {
         perror("read");
         b->status = 1;
     }
-    r = read(durfd, &b->bytes, sizeof b->bytes);
-    if (r != sizeof b->bytes) {
+    r = read(durfd, &b->bytes, sizeof(b->bytes));
+    if (r != sizeof(b->bytes)) {
         perror("read");
         b->status = 1;
     }
@@ -521,7 +521,7 @@ report(Test *t)
 
 
 static int
-readtokens()
+readtokens(void)
 {
     int n = 1;
     char c, *s;
